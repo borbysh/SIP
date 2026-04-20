@@ -1,36 +1,22 @@
-# heat_equation.h
-
 #ifndef HEAT_EQUATION_H
 #define HEAT_EQUATION_H
 
-#include <vector>
-
-// Structure to define the heat equation problem
-struct HeatEquation {
-    int nx;            // Number of grid points in the x direction
-    int ny;            // Number of grid points in the y direction
-    double dx;         // Grid spacing in the x direction
-    double dy;         // Grid spacing in the y direction
-    double alpha;      // Thermal diffusivity
-
-    // Constructor to initialize parameters
-    HeatEquation(int nx, int ny, double dx, double dy, double alpha) 
-        : nx(nx), ny(ny), dx(dx), dy(dy), alpha(alpha) {}
-};
-
-// Enum for boundary conditions
-enum BoundaryCondition {
-    DIRICHLET,
-    NEUMANN
-};
+#define N 100
+#define T 1000
+#define DELTA_T 0.01
+#define DX 0.1
+#define ALPHA 0.1
 
 // Function to apply boundary conditions
-void applyBoundaryConditions(std::vector<std::vector<double>>& u, BoundaryCondition bc);
+void apply_boundary_conditions(double u[N][N]);
 
-// Function to solve the heat equation given initial conditions and boundary conditions
-void solveHeatEquation(HeatEquation& problem, const std::vector<std::vector<double>>& initialCondition, BoundaryCondition bc);
+// Function to solve the heat equation given initial conditions
+void solve_heat_equation(void);
 
-// Function to provide the analytical solution for the 2D Dirac delta initial condition
-std::vector<std::vector<double>> analyticalSolution(HeatEquation& problem, double time);
+// Function to initialize the solution field
+void initialize(double u[N][N]);
+
+// Function to perform Laplacian discretization
+void laplace_solver(double u[N][N], double u_new[N][N]);
 
 #endif // HEAT_EQUATION_H
