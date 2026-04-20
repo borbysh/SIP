@@ -1,0 +1,1 @@
+#ifndef ANALYTICAL_H\n#define ANALYTICAL_H\n\n// Function to compute the analytical solution of the 2D heat equation using the Green's function.\nvoid analytical_solution(double x, double y, double t, double *result);\n\n// Function to set the initial condition with Dirac delta function.\nvoid set_initial_condition(double x, double y);\n\n#endif // ANALYTICAL_H
