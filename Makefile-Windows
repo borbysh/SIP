@@ -1,0 +1,29 @@
+# Makefile for SIP Solver (Microsoft Visual Studio)
+
+# Compiler and flags
+CC = cl
+CFLAGS = /W4 /std:c11 /O2
+LDFLAGS = /link
+
+# Source files
+SRC = main.c SIP.c heat_equation.c analytical.c comparison.c vtk_output.c
+OBJ = main.obj SIP.obj heat_equation.obj analytical.obj comparison.obj vtk_output.obj
+
+# Executable name
+EXEC = sip_solver.exe
+
+# Default target
+all: $(EXEC)
+
+# Linking
+$(EXEC): $(OBJ)
+	$(CC) $(OBJ) $(LDFLAGS) /OUT:$@
+
+# Compilation rule
+.c.obj:
+	$(CC) $(CFLAGS) /c $<
+
+# Clean target
+clean:
+	del $(OBJ) $(EXEC)
+	@echo Clean completed
