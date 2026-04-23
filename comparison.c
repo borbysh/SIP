@@ -71,10 +71,16 @@ double l_inf_norm_error(double *numerical, double *analytical, int size) {
 }
 
 // Function to compute relative error
-double relative_error(double numerical, double analytical) {
-    if (fabs(analytical) < 1e-14) {
-        fprintf(stderr, "Warning: Analytical solution near zero, relative error undefined\n");
-        return fabs(numerical);
+double relative_error(double *numerical, double *analytical, int size) {
+    if (numerical == NULL || analytical == NULL || size <= 0) {
+        fprintf(stderr, "Error: Invalid parameters in relative_error\n");
+        return -1.0;
     }
-    return fabs((numerical - analytical) / analytical);
+    
+    double sum = 0.0;
+    for (int i = 0; i < size; i++) {
+        sum += fabs((numerical[i] - analytical[i])) / (fabs(numerical[i]) + 1e-14);
+    }
+    return sum / size;
 }
+
