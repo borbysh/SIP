@@ -139,7 +139,8 @@ void print_error_statistics(void) {
     printf("  MSE:        %.6e\n", compute_mse(numerical, analytical, num_points));
     printf("  RMSE:       %.6e\n", compute_rmse(numerical, analytical, num_points));
     printf("  L2 norm:    %.6e\n", l2_norm_error(numerical, analytical, num_points));
-    printf("  L-infinity: %.6e\n\n", l_inf_norm_error(numerical, analytical, num_points));
+    printf("  L-infinity: %.6e\n", l_inf_norm_error(numerical, analytical, num_points));
+    printf("  Relative_error: %.6e\n\n", relative_error(numerical, analytical, num_points));
     
     free(numerical);
     free(analytical);
