@@ -17,6 +17,6 @@ double l2_norm_error(double *numerical, double *analytical, int size);
 double l_inf_norm_error(double *numerical, double *analytical, int size);
 
 // Function to compute relative error
-double relative_error(double numerical, double analytical);
+double relative_error(double *numerical, double *analytical, int size);
 
 #endif // COMPARISON_H
