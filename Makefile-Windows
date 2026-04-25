@@ -1,32 +1,43 @@
-CC = cl
-COMMONDIR = d:\Treasure\Heat_eq_solver\common\
+# Makefile for heat_omp project (Microsoft Visual Studio)
+# Usage: nmake -f Makefile.win
+#        nmake -f Makefile.win COMP=msvc
+#        nmake -f Makefile.win clean
 
-# UPDATE THIS PATH to your vcpkg installation directory
-VCPKG_PATH = c:\Users\aless\vcpkg\installed\x64-windows
+!IF "$(COMP)" == ""
+COMP=msvc
+!ENDIF
 
-# Compiler flags with vcpkg include path
-# Add /DNO_FREETYPE to bypass the missing header
-# Add /TP to force C++ compilation
-CFLAGS = /O2 /W3 /Id:\Treasure\Heat_eq_solver\common /I"c:\Users\aless\vcpkg\installed\x64-windows\include" /openmp /D_CRT_SECURE_NO_WARNINGS /DNO_FREETYPE /TP
-
-
-# Linker flags with vcpkg library path
-# Note: we use /link to pass paths to the linker
-LDFLAGS = /Fe:heat_omp.exe /link /LIBPATH:"$(VCPKG_PATH)\lib"
-
-# Libraries to link
+COMMONDIR = d:\Treasure\Heat_eq_solver\common
+!IF "$(COMP)" == "msvc"
+CC=cl
+CCFLAGS=/O2 /W4 /I$(COMMONDIR)
+LDFLAGS=/LIBPATH:"c:\Users\aless\vcpkg\installed\x64-windows\lib"
 LIBS = libpng16.lib z.lib
+EXE_EXT=.exe
+OBJ_EXT=.obj
+!ENDIF
 
-OBJS = core.obj setup.obj utilities.obj io.obj main.obj
-OBJS_PNG = $(COMMONDIR)\pngwriter.obj
+!IF "$(COMP)" == "gnu"
+CC=gcc
+CCFLAGS=-fopenmp -O3 -Wall -I$(COMMONDIR)
+LDFLAGS=
+LIBS=-lpng
+EXE_EXT=
+OBJ_EXT=.o
+!ENDIF
 
-all: $(OBJS) $(OBJS_PNG)
-	$(CC) $(OBJS) $(OBJS_PNG) $(LDFLAGS) $(LIBS)
+EXE=heat_omp$(EXE_EXT)
+OBJS=core$(OBJ_EXT) setup$(OBJ_EXT) utilities$(OBJ_EXT) io$(OBJ_EXT) main$(OBJ_EXT)
+OBJS_PNG=$(COMMONDIR)\pngwriter$(OBJ_EXT)
 
-.c.obj:
-	$(CC) $(CFLAGS) /c $< /Fo$@
+all: $(EXE)
 
-# ... (rest of the dependencies remain the same) ...
+$(EXE): $(OBJS) $(OBJS_PNG)
+	$(CC) $(CCFLAGS) $(OBJS) $(OBJS_PNG) /Fe$@ $(LDFLAGS) $(LIBS)
+
+.c$(OBJ_EXT):
+	$(CC) $(CCFLAGS) /c $<
 
 clean:
-	del *.obj $(COMMONDIR)\*.obj heat_omp.exe *.png
+	-del $(EXE) *.$(OBJ_EXT) $(COMMONDIR)\*.$(OBJ_EXT) *.png
+	@echo Clean completed
