@@ -1,0 +1,32 @@
+CC = cl
+COMMONDIR = d:\Treasure\Heat_eq_solver\common\
+
+# UPDATE THIS PATH to your vcpkg installation directory
+VCPKG_PATH = c:\Users\aless\vcpkg\installed\x64-windows
+
+# Compiler flags with vcpkg include path
+# Add /DNO_FREETYPE to bypass the missing header
+# Add /TP to force C++ compilation
+CFLAGS = /O2 /W3 /Id:\Treasure\Heat_eq_solver\common /I"c:\Users\aless\vcpkg\installed\x64-windows\include" /openmp /D_CRT_SECURE_NO_WARNINGS /DNO_FREETYPE /TP
+
+
+# Linker flags with vcpkg library path
+# Note: we use /link to pass paths to the linker
+LDFLAGS = /Fe:heat_omp.exe /link /LIBPATH:"$(VCPKG_PATH)\lib"
+
+# Libraries to link
+LIBS = libpng16.lib z.lib
+
+OBJS = core.obj setup.obj utilities.obj io.obj main.obj
+OBJS_PNG = $(COMMONDIR)\pngwriter.obj
+
+all: $(OBJS) $(OBJS_PNG)
+	$(CC) $(OBJS) $(OBJS_PNG) $(LDFLAGS) $(LIBS)
+
+.c.obj:
+	$(CC) $(CFLAGS) /c $< /Fo$@
+
+# ... (rest of the dependencies remain the same) ...
+
+clean:
+	del *.obj $(COMMONDIR)\*.obj heat_omp.exe *.png
