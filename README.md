@@ -1,5 +1,7 @@
 Two dimensional heat equation
 =============================
+This is a modified version of the project by [Jussi Enkovaara](https://repository.prace-ri.eu/git/jussi.enkovaara) available at https://repository.prace-ri.eu/git/CodeVault/training-material/parallel-programming/OpenMP/-/tree/master/heat-equation/c/solution?ref_type=heads
+
 This folder contains a code which solves two dimensional heat equation
 with OpenMP parallelization. A coarse grained parallelization is used, where
 the threads are launched in the start of the program and kept alive throughout
